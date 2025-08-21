@@ -316,3 +316,6 @@ export default withMermaid({
         class: "mermaid my-class", // set additional css classes for parent container
     },
 });
+
+
+{text: "Fluxx", link: "/ingestion/fluxx.md"},
