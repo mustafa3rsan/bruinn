@@ -1,21 +1,17 @@
 package salesforce
 
-import (
-	"net/url"
-)
+import "net/url"
 
 type Config struct {
-	Username string
-	Password string
-	Token    string
+	Instance string
+	ClientId string
+	ClientSecret string
 }
 
 func (c *Config) GetIngestrURI() string {
-	// salesforce://?username=<your_username>&password=<your_password>&token=<your_token>
-	baseURL := "salesforce://"
-	params := url.Values{}
-	params.Add("username", c.Username)
-	params.Add("password", c.Password)
-	params.Add("token", c.Token)
-	return baseURL + "?" + params.Encode()
+	v := url.Values{}
+	v.Set("instance", c.Instance)
+	v.Set("client_id", c.ClientId)
+	v.Set("client_secret", c.ClientSecret)
+	return "salesforce://" + c.Instance + "?" + v.Encode()
 }
