@@ -29,6 +29,7 @@ import (
 	"github.com/bruin-data/bruin/pkg/elasticsearch"
 	"github.com/bruin-data/bruin/pkg/emr_serverless"
 	"github.com/bruin-data/bruin/pkg/facebookads"
+	"github.com/bruin-data/bruin/pkg/fluxx"
 	"github.com/bruin-data/bruin/pkg/frankfurter"
 	"github.com/bruin-data/bruin/pkg/gcs"
 	"github.com/bruin-data/bruin/pkg/github"
@@ -98,6 +99,7 @@ type Manager struct {
 	Athena               map[string]*athena.DB
 	Aws                  map[string]*config.AwsConnection
 	FacebookAds          map[string]*facebookads.Client
+	Fluxx                map[string]*fluxx.Client
 	Stripe               map[string]*stripe.Client
 	Appsflyer            map[string]*appsflyer.Client
 	Kafka                map[string]*kafka.Client
@@ -699,6 +701,31 @@ func (m *Manager) AddFacebookAdsConnectionFromConfig(connection *config.Facebook
 	m.mutex.Lock()
 	defer m.mutex.Unlock()
 	m.FacebookAds[connection.Name] = client
+	m.availableConnections[connection.Name] = client
+	m.AllConnectionDetails[connection.Name] = connection
+
+	return nil
+}
+
+func (m *Manager) AddFluxxConnectionFromConfig(connection *config.FluxxConnection) error {
+	m.mutex.Lock()
+	if m.Fluxx == nil {
+		m.Fluxx = make(map[string]*fluxx.Client)
+	}
+	m.mutex.Unlock()
+
+	client, err := fluxx.NewClient(fluxx.Config{
+		Instance:     connection.Instance,
+		ClientID:     connection.ClientID,
+		ClientSecret: connection.ClientSecret,
+	})
+	if err != nil {
+		return err
+	}
+
+	m.mutex.Lock()
+	defer m.mutex.Unlock()
+	m.Fluxx[connection.Name] = client
 	m.availableConnections[connection.Name] = client
 	m.AllConnectionDetails[connection.Name] = connection
 
@@ -2044,6 +2071,7 @@ func NewManagerFromConfig(cm *config.Config) (config.ConnectionAndDetailsGetter,
 	processConnections(cm.SelectedEnvironment.Connections.Klaviyo, connectionManager.AddKlaviyoConnectionFromConfig, &wg, &errList, &mu)
 	processConnections(cm.SelectedEnvironment.Connections.Adjust, connectionManager.AddAdjustConnectionFromConfig, &wg, &errList, &mu)
 	processConnections(cm.SelectedEnvironment.Connections.FacebookAds, connectionManager.AddFacebookAdsConnectionFromConfig, &wg, &errList, &mu)
+	processConnections(cm.SelectedEnvironment.Connections.Fluxx, connectionManager.AddFluxxConnectionFromConfig, &wg, &errList, &mu)
 	processConnections(cm.SelectedEnvironment.Connections.Stripe, connectionManager.AddStripeConnectionFromConfig, &wg, &errList, &mu)
 	processConnections(cm.SelectedEnvironment.Connections.Appsflyer, connectionManager.AddAppsflyerConnectionFromConfig, &wg, &errList, &mu)
 	processConnections(cm.SelectedEnvironment.Connections.Kafka, connectionManager.AddKafkaConnectionFromConfig, &wg, &errList, &mu)

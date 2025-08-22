@@ -631,6 +631,12 @@
           },
           "type": "array"
         },
+        "fluxx": {
+          "items": {
+            "$ref": "#/$defs/FluxxConnection"
+          },
+          "type": "array"
+        },
         "frankfurter": {
           "items": {
             "$ref": "#/$defs/FrankfurterConnection"
@@ -929,6 +935,30 @@
         "name",
         "access_token",
         "account_id"
+      ]
+    },
+    "FluxxConnection": {
+      "properties": {
+        "name": {
+          "type": "string"
+        },
+        "instance": {
+          "type": "string"
+        },
+        "client_id": {
+          "type": "string"
+        },
+        "client_secret": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false,
+      "type": "object",
+      "required": [
+        "name",
+        "instance",
+        "client_id",
+        "client_secret"
       ]
     },
     "FrankfurterConnection": {

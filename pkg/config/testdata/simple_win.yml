@@ -123,6 +123,11 @@ environments:
         - name: conn17
           access_token: "Facebookkey"
           account_id: "Id123"
+      fluxx:
+        - name: conn_fluxx
+          instance: "mycompany.preprod"
+          client_id: "fluxx_client_id"
+          client_secret: "fluxx_client_secret"
       stripe:
         - name: conn18
           api_key: "stripekey"

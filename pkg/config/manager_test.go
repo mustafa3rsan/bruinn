@@ -200,6 +200,14 @@ func TestLoadFromFile(t *testing.T) {
 					AccountID:   "Id123",
 				},
 			},
+			Fluxx: []FluxxConnection{
+				{
+					Name:         "conn_fluxx",
+					Instance:     "mycompany.preprod",
+					ClientID:     "fluxx_client_id",
+					ClientSecret: "fluxx_client_secret",
+				},
+			},
 			Stripe: []StripeConnection{
 				{
 					Name:   "conn18",
