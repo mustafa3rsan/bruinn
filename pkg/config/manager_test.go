@@ -216,6 +216,14 @@ func TestLoadFromFile(t *testing.T) {
 					Secure: "true",
 				},
 			},
+			Fluxx: []FluxxConnection{
+				{
+					Name:         "fluxx-1",
+					Instance:     "myorg.preprod",
+					ClientID:     "fluxx_client_id_123",
+					ClientSecret: "fluxx_client_secret_123",
+				},
+			},
 			Appsflyer: []AppsflyerConnection{
 				{
 					Name:   "conn19",
