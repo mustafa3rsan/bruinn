@@ -370,6 +370,11 @@ environments:
           org: "influxdb-org"
           bucket: "influxdb-bucket"
           secure: "true"
+      fluxx:
+        - name: "fluxx-1"
+          instance: "myorg.preprod"
+          client_id: "fluxx_client_id_123"
+          client_secret: "fluxx_client_secret_123"
 
   prod:
     connections:
